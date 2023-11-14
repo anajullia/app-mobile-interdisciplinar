@@ -16,6 +16,7 @@ export default function App() {
     const [id,setId] = useState('');
     const [buscar,setBuscar] = useState('');
     const [abrir,setAbrir] = useState(false);
+    const [abrirhome,setAbrirhome] = useState(false);
 
   async function add(){
         const obj = {nome,email,senha,id}
@@ -40,16 +41,6 @@ export default function App() {
     }
   return (
    <View style={estilos.container}>
-
-    <TextInput
-                type="text"
-                style={estilos.input}
-                placeholder='Insira um Nome'
-                value={nome}
-                onChangeText={(nome) => setNome(nome)}
-              >
-              </TextInput>
-
               <TextInput
                 type="text"
                 style={estilos.input}
@@ -72,13 +63,13 @@ export default function App() {
 
     <View style={estilos.containerprimeirosbotoes}>
       <TouchableOpacity style={estilos.botoes}>
-        <Text style={estilos.textobotoes}>Logar</Text>
+        <Text style={estilos.textobotoes} onPress={() => setAbrirhome(true)}>Logar</Text>
       </TouchableOpacity>
       <TouchableOpacity style={estilos.botoes}>
         <Text style={estilos.textobotoes} onPress={() => setAbrir(true)}>Criar cadastro</Text>
       </TouchableOpacity>
     </View>
-    <Modal
+    <Modal // MODAL PRIMEIRA TELA
             //colocar animação
             visible={abrir}
           >
@@ -90,7 +81,7 @@ export default function App() {
                   <Ionicons style={{marginLeft:5 , marginRight:5}}
                     name="md-arrow-back"
                     size={35}
-                    color="#FFF"
+                    color="#008D5C"
                   >
                   </Ionicons>
                  </TouchableOpacity>
@@ -136,6 +127,30 @@ export default function App() {
             </SafeAreaView>
 
           </Modal>
+
+    
+
+          <Modal // MODAL HOME!
+            
+            visible={abrirhome}
+          >
+            <SafeAreaView style={estilos.modal}>
+              <View style={estilos.modalHeader}>
+              <TouchableOpacity
+                   onPress={() => setAbrirhome(false)}
+                 >
+                  <Ionicons style={{marginLeft:5 , marginRight:5}}
+                    name="md-arrow-back"
+                    size={35}
+                    color="#008D5C"
+                  >
+                  </Ionicons>
+                 </TouchableOpacity>
+              </View>
+            </SafeAreaView>
+
+          </Modal>
+    
 
    </View>
   );
@@ -246,9 +261,31 @@ textoModal:{
   },
 
   textoBotaoModal:{
+    margin: 11,
     fontSize: 20,
     color:'#008D5C',
-    marginLeft: 180
+    textAlign: 'center'
+  },
+  
+  botaoModal:{
+    width:300,
+    height:60,
+    backgroundColor: '#FFD100',
+    borderColor: '#008D5C',
+    borderWidth:5,
+    borderRadius: 10,
+    margin: 30,
+    marginLeft: 55
+  },
+
+  botoes:{
+    width:300,
+    height:60,
+    backgroundColor: '#FFD100',
+    borderColor: '#008D5C',
+    borderWidth:5,
+    borderRadius: 10,
+    margin: 10
   },
 
   inputcadastro:{
