@@ -17,6 +17,8 @@ export default function App() {
     const [buscar,setBuscar] = useState('');
     const [abrir,setAbrir] = useState(false);
     const [abrirhome,setAbrirhome] = useState(false);
+    const [abrirservicos,setAbrirservicos] = useState(false);
+    const [abrirperfil,setAbrirperfil] = useState(false);
 
   async function add(){
         const obj = {nome,email,senha,id}
@@ -130,7 +132,7 @@ export default function App() {
 
     
 
-          <Modal // MODAL HOME!
+          <Modal // MODAL HOME! 
             
             visible={abrirhome}
           >
@@ -146,9 +148,54 @@ export default function App() {
                   >
                   </Ionicons>
                  </TouchableOpacity>
+                 <View style={estilos.containerbotoes}>
+                  <View style={estilos.containerbtum}>
+                    <Text style={estilos.legenda}>Agendar Serviço</Text>
+                      <TouchableOpacity
+                        style={estilos.botao}
+                        onPress={() => setAbrir(true)}
+                      >
+                      <Ionicons style={estilos.icones} name="cart" size={80} color="#008D5C" ></Ionicons>    
+                      </TouchableOpacity>
+                  </View>
+                  <View style={estilos.containerbtdois}>
+                    <Text style={estilos.legenda2}>Perfil</Text>
+                      <TouchableOpacity
+                        style={estilos.botao}
+                        onPress={() => setAbrirperfil(true)}
+                      >
+                      <Ionicons style={estilos.icones} name="person-circle-outline" size={80} color="#008D5C" ></Ionicons>    
+                      </TouchableOpacity>
+                  </View>
+                 </View>
               </View>
             </SafeAreaView>
 
+          </Modal>
+
+          <Modal // MODAL PRIMEIRA TELA
+            //colocar animação
+            visible={abrirperfil}
+          >
+
+              <SafeAreaView style={estilos.modal}>
+              <View style={estilos.modalHeader}>
+              <TouchableOpacity
+                   onPress={() => setAbrirperfil(false)}
+                 >
+                  <Ionicons style={{marginLeft:5 , marginRight:5, marginTop:10}}
+                    name="md-arrow-back"
+                    size={35}
+                    color="#008D5C"
+                  >
+                  </Ionicons>
+                  <Ionicons></Ionicons>
+                 </TouchableOpacity>
+                 <Text style={estilos.textonav}> Bem-vindo(a)!</Text>
+                 <Ionicons style={estilos.iconetopo} name="person-circle-outline" size={50} color="#008D5C" ></Ionicons>    
+              </View>
+              </SafeAreaView>
+            
           </Modal>
     
 
@@ -194,9 +241,10 @@ textoModal:{
 },
 
   containerbotoes:{
-    marginTop: 350,
+    marginTop: 430,
     height: 50,
-    width: 100
+    width: 100,
+    marginLeft:140
   },
 
   containerprimeirosbotoes:{
@@ -214,8 +262,8 @@ textoModal:{
   },
 
   botao:{
-    width:100,
-    height:100,
+    width:150,
+    height:150,
     backgroundColor: '#FFD100',
     borderColor: '#008D5C',
     borderWidth:6,
@@ -303,16 +351,33 @@ textoModal:{
 
   icones:{
     textAlign:'center',
-    marginTop: 15
+    marginTop: 27,
   },
+
+  iconetopo:{
+    textAlign:'center',
+    marginTop: 0,
+    marginLeft: 350,
+    position: 'absolute'
+  },
+
 
   legenda:{
     color:'#008D5C',
     fontSize: 20,
     marginTop: -200,
-    marginLeft: 0,
+    marginLeft: 25,
+    width:100,
     position: 'relative',
     textAlign: 'center'
+  },
+
+  textonav:{
+    color:'#008D5C',
+    marginLeft: 150,
+    marginTop: 13,
+    position: 'absolute',
+    fontSize: 20,
   },
 
   textobotoes:{
@@ -328,7 +393,8 @@ color:'#008D5C',
     color:'#008D5C',
     fontSize: 20,
     marginTop: -200,
-    marginLeft: 0,
+    marginLeft: 25,
+    width:100,
     position: 'relative',
     textAlign: 'center'
   },
