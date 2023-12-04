@@ -19,8 +19,32 @@ export default function App() {
     const [abrirhome,setAbrirhome] = useState(false);
     const [abrirservicos,setAbrirservicos] = useState(false);
     const [abrirperfil,setAbrirperfil] = useState(false);
+    const [abrircadastro,setAbrircadastro] = useState(false);
+    const mensagemDuplicidade = () =>
+    Alert.alert(
+      "Erro ao salvar",
+      "Email já cadastrado",
+      [
+        {text: "OK", onPress : () => setAbrir(true)}
+      ],
+      {cancelable: true},
+    )
 
-  async function add(){
+    //Para verificar os dados cadastrados
+    useEffect(() => {
+      listarDados();
+    },[])
+
+    async function listarDados(){
+        const res = await axios.get(api+ 'listar.php?busca=' + buscar );
+        setLista(res.data.result);
+    }
+
+    function buscarDados(){
+      listarDados();
+    }
+
+    async function add(){
         const obj = {nome,email,senha,id}
 
         if(id > 0){
@@ -41,6 +65,45 @@ export default function App() {
         listarDados();
         setAbrir(false);
     }
+
+    function mensagemDelete(id){
+      Alert.alert(
+        "Excluir registro",
+        "Deseja excluir o registro?",
+        [
+          { 
+            text: "Não" ,onPress :()=> console.log("cancel Pressed"),
+            style: "cancel"
+          },
+          {
+            text:"Sim",
+            onpress: () => deleteItem(id)
+          }
+        ],
+        {cancelable : true}
+      )
+    }
+
+    async function getItem(id){
+      const res= await axios.get(api + 'buscarId.php?id=' + id);
+      setId(res.data.id);
+      setNome(res.data.nome);
+      setEmail(res.data.email);
+      setSenha(res.data.senha);
+      setAbrir(true);
+    }
+
+    async function deleteItem(id){
+      const res= await axios.get(api + 'buscarId.php?id=' + id);
+      listarDados();
+    }
+
+    function limparCampos(){
+        setNome('');
+        setEmail('');
+        setSenha('');
+        setId('0');
+    }
   return (
    <View style={estilos.container}>
               <TextInput
@@ -48,7 +111,6 @@ export default function App() {
                 style={estilos.input}
                 placeholder='Insira seu E-mail'
                 value={email}
-                onChangeText={(email) => setEmail(email)}
               >
               </TextInput>
 
@@ -57,7 +119,6 @@ export default function App() {
                 style={estilos.input}
                 placeholder='Insira sua Senha'
                 value={senha}
-                onChangeText={(senha) => setSenha(senha)}
                 secureTextEntry={true}
               >
               </TextInput>
@@ -126,16 +187,74 @@ export default function App() {
                  <Text style={estilos.textoBotaoModal}>Salvar</Text>
                </TouchableOpacity>
 
+               
+
+            </SafeAreaView>
+
+          </Modal>
+
+          <Modal
+            //colocar animação
+            visible={abrircadastro}
+          >
+            <SafeAreaView style={estilos.modal}>
+              <View style={estilos.modalHeader}>
+                 <TouchableOpacity
+                   onPress={() => setAbrir(false)}
+                 >
+                  <Ionicons style={{marginLeft:5 , marginRight:5}}
+                    name="md-arrow-back"
+                    size={35}
+                    color="#FFF"
+                  >
+                  </Ionicons>
+                 </TouchableOpacity>
+                <Text style={estilos.textoModal}>
+                    Inserir Usuário
+                </Text>
+              </View>
+               <TextInput
+                 type="text"
+                 style={estilos.input}
+                 placeholder='Insira um Nome'
+                 value={nome}
+                 onChangeText={(nome) => setNome(nome)}
+               >
+               </TextInput>
+
+               <TextInput
+                 type="text"
+                 style={estilos.input}
+                 placeholder='Insira seu E-mail'
+                 value={email}
+                 onChangeText={(email) => setEmail(email)}
+               >
+               </TextInput>
+
+               <TextInput
+                 type="text"
+                 style={estilos.input}
+                 placeholder='Insira sua Senha'
+                 value={senha}
+                 onChangeText={(senha) => setSenha(senha)}
+                 secureTextEntry={true}
+               >
+               </TextInput>
+
+               <TouchableOpacity
+                 style={estilos.botaoModal}
+                 onPress={add}
+               >
+                 <Text style={estilos.textoBotaoModal}>Salvar</Text>
+               </TouchableOpacity>
+
             </SafeAreaView>
 
           </Modal>
 
     
 
-          <Modal // MODAL HOME! 
-            
-            visible={abrirhome}
-          >
+          <Modal visible={abrirhome}>
             <SafeAreaView style={estilos.modal}>
               <View style={estilos.modalHeader}>
               <TouchableOpacity
@@ -153,7 +272,7 @@ export default function App() {
                     <Text style={estilos.legenda}>Agendar Serviço</Text>
                       <TouchableOpacity
                         style={estilos.botao}
-                        onPress={() => setAbrir(true)}
+                        onPress={() => setAbrirservicos(true)}
                       >
                       <Ionicons style={estilos.icones} name="cart" size={80} color="#008D5C" ></Ionicons>    
                       </TouchableOpacity>
@@ -194,9 +313,74 @@ export default function App() {
                  <Text style={estilos.textonav}> Bem-vindo(a)!</Text>
                  <Ionicons style={estilos.iconetopo} name="person-circle-outline" size={50} color="#008D5C" ></Ionicons>    
               </View>
+              <TextInput
+                 type="text"
+                 style={estilos.inputcadastro}
+                 placeholder='Insira o email'
+                 value={nome}
+                 onChangeText={(nome) => setNome(nome)}
+               >
+               </TextInput>
               </SafeAreaView>
+
             
           </Modal>
+
+          <Modal visible={abrirservicos}>
+            <SafeAreaView style={estilos.modal}>
+              <View //NAVBAR!
+              style={estilos.modalHeader}>
+              <TouchableOpacity // botão voltar
+                  onPress={() => setAbrirservicos(false)}
+                >
+                  <Ionicons style={{marginLeft:5 , marginRight:5, marginTop:10}}
+                    name="md-arrow-back"
+                    size={35}
+                    color="#008D5C"
+                  >
+                  </Ionicons>
+                </TouchableOpacity>
+                <Text style={estilos.textonav}>Lista de Serviços</Text>  
+              <TouchableOpacity // botão add
+                onPress={() => setAbrircadastro(true)}
+              >
+              <Ionicons style={{marginLeft:390 , marginRight:5, marginTop:-40}}
+                    name="ios-add"
+                    size={35}
+                    color="#008D5C"
+                  >
+                  </Ionicons>    
+
+              </TouchableOpacity>
+              </View>
+
+              <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1, marginBottom: 10 }}>
+        <View style={estilos.grid}>
+          {lista.map((item) => (
+            <View style={estilos.griditem} key={item.id}>
+              <Text style={{ color: '#585858' }}>oiiii</Text>
+              <TouchableOpacity
+                style={estilos.gridbotaoEditar}
+                onPress={() => getItem()}
+              >
+                <Ionicons name="ios-create" size={30} color="#50b9e1" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={estilos.gridbotaoExcluir}
+                onPress={() => getItem()}
+              >
+                <Ionicons name="ios-create" size={30} color="#e15f50" />
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+
+            </SafeAreaView>
+          </Modal>
+        
     
 
    </View>
@@ -397,5 +581,20 @@ color:'#008D5C',
     width:100,
     position: 'relative',
     textAlign: 'center'
+  },
+
+  grid:{
+    marginTop: 8,    
+  },
+
+  griditem:{
+    padding: 11,
+    borderBottomColor: "#",
+    borderBottomWidth: StyleSheet.hairlineWidth
+  },
+
+  modal:{
+    flex: 1,
+    backgroundColor:'#fff'    
   },
 });
