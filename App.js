@@ -8,11 +8,13 @@ import axios from 'axios';
 
 export default function App() {
 
-    const api = 'http://10.68.36.102/pam2etim/interdisciplinar/';
+    const api = 'http://192.168.1.104/apireact/apireact/';
     const [lista,setLista] = useState([]);
     const [nome,setNome] = useState('');
     const [email,setEmail] = useState('');
     const [senha,setSenha] = useState('');
+    const [tiposervico,setTiposervico] = useState('');
+    const [intrucoes,setInstrucoes] = useState('');
     const [id,setId] = useState('');
     const [buscar,setBuscar] = useState('');
     const [abrir,setAbrir] = useState(false);
@@ -45,7 +47,7 @@ export default function App() {
     }
 
     async function add(){
-        const obj = {nome,email,senha,id}
+        const obj = {nome,email,senha,id,tiposervico,instrucoes}
 
         if(id > 0){
           const res = await axios.post(api + 'editar.php', obj);
@@ -90,6 +92,8 @@ export default function App() {
       setNome(res.data.nome);
       setEmail(res.data.email);
       setSenha(res.data.senha);
+      setTiposervico(res.data.tiposervico);
+      setInstrucoes(res.data.intrucoes);
       setAbrir(true);
     }
 
@@ -102,6 +106,8 @@ export default function App() {
         setNome('');
         setEmail('');
         setSenha('');
+        setTiposervico('');
+        setInstrucoes('');
         setId('0');
     }
   return (
@@ -353,30 +359,23 @@ export default function App() {
 
               </TouchableOpacity>
               </View>
+              <View //BARRA DE BUSCA
+               style={estilos.ViewinputBuscar}>
+            <TextInput
+              style={{marginLeft: 20, marginTop: 20}}
+              placeholder="Buscar por serviço agendado"
+              value={buscar}
+              onChangeText={(texto) => setBuscar(texto)}  // Correção aqui
+            >
+            </TextInput>
 
-              <View style={{ flex: 1 }}>
-      <ScrollView style={{ flex: 1, marginBottom: 10 }}>
-        <View style={estilos.grid}>
-          {lista.map((item) => (
-            <View style={estilos.griditem} key={item.id}>
-              <Text style={{ color: '#585858' }}>oiiii</Text>
-              <TouchableOpacity
-                style={estilos.gridbotaoEditar}
-                onPress={() => getItem()}
-              >
-                <Ionicons name="ios-create" size={30} color="#50b9e1" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={estilos.gridbotaoExcluir}
-                onPress={() => getItem()}
-              >
-                <Ionicons name="ios-create" size={30} color="#e15f50" />
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
-      </ScrollView>
-    </View>
+                <Ionicons style={{marginLeft:390 , marginRight:5, marginTop:-28}} name='ios-search' size={25} color='#008D5C'></Ionicons>
+          </View>
+
+          <ScrollView // Adicione ou ajuste conforme necessário
+          >
+            
+          </ScrollView>
 
             </SafeAreaView>
           </Modal>
