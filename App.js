@@ -16,6 +16,9 @@ export default function App() {
     const [tiposervico,setTiposervico] = useState('');
     const [intrucoes,setInstrucoes] = useState('');
     const [id,setId] = useState('');
+    const [nomeservico,setNomeservico] = useState('');
+    const [descricaoservico,setDescricaoservico] = useState('');
+    const [precoservico,setPrecoservico] = useState('');
     const [buscar,setBuscar] = useState('');
     const [abrir,setAbrir] = useState(false);
     const [abrirhome,setAbrirhome] = useState(false);
@@ -319,14 +322,50 @@ export default function App() {
                  <Text style={estilos.textonav}> Bem-vindo(a)!</Text>
                  <Ionicons style={estilos.iconetopo} name="person-circle-outline" size={50} color="#008D5C" ></Ionicons>    
               </View>
-              <TextInput
-                 type="text"
-                 style={estilos.inputcadastro}
-                 placeholder='Insira o email'
-                 value={nome}
-                 onChangeText={(nome) => setNome(nome)}
-               >
-               </TextInput>
+              <View //BARRA DE BUSCA
+               style={estilos.ViewinputBuscar}>
+            <TextInput
+              style={{marginLeft: 20, marginTop: 20}}
+              placeholder="Buscar a conta cadastrada por email"
+              value={buscar}
+              onChangeText={(texto) => setBuscar(texto)}  // Correção aqui
+            >
+            </TextInput>
+
+                <Ionicons style={{marginLeft:390 , marginRight:5, marginTop:-28}} name='ios-search' size={25} color='#008D5C'></Ionicons>
+          </View>
+
+          <ScrollView>
+            <View style={estilos.grid}>
+              {lista.map(item => (
+
+                <View 
+                style={estilos.griditem}
+                key={item.id}
+                >
+                  <Text style={{color:'#585858'}} >{item.id}
+                   - {item.nome} -aaaaa {item.email}</Text>   
+
+                   <TouchableOpacity
+                    style={estilos.gridbotaoEditar}
+                    onPress={() => getItem}
+                   >
+                    <Ionicons name='ios-create' size={30} color="#50b9e1"></Ionicons>
+                    
+                   </TouchableOpacity>
+
+                   <TouchableOpacity
+                    style={estilos.gridbotaoExcluir}
+                    onPress={() => getItem}
+                   >
+                    <Ionicons name='ios-create' size={30} color="#e15f50"></Ionicons>
+                    
+                   </TouchableOpacity>
+
+                </View>
+              ))}              
+            </View>
+          </ScrollView>
               </SafeAreaView>
 
             
@@ -372,7 +411,7 @@ export default function App() {
                 <Ionicons style={{marginLeft:390 , marginRight:5, marginTop:-28}} name='ios-search' size={25} color='#008D5C'></Ionicons>
           </View>
 
-          <ScrollView // Adicione ou ajuste conforme necessário
+          <ScrollView // Adicione ou ajuste conforme necessário   
           >
             
           </ScrollView>
